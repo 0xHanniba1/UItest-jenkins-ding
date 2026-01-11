@@ -59,7 +59,7 @@ Thumbs.db
 .tabnine/
 .sourcegraph/
 .cody/
-CLAUDE.md
+# CLAUDE.md
 .github/copilot-*
 
 # AI 生成的临时/上下文文件
@@ -74,3 +74,6 @@ output/
 data/
 *.csv
 *.xlsx
+
+# ignore
+.gitignore
