@@ -4,6 +4,34 @@ import os
 import sys
 import urllib.request
 import urllib.error
+from pathlib import Path
+
+# 加载 .env 文件（本地测试用）
+try:
+    from dotenv import load_dotenv
+    env_path = Path(__file__).parent.parent / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
+except ImportError:
+    pass
+
+
+def get_webhook_url() -> str:
+    """
+    获取钉钉 Webhook URL
+    优先级：DINGTALK_WEBHOOK > DING_TOKEN（拼接完整 URL）
+    """
+    # 优先使用完整的 DINGTALK_WEBHOOK
+    webhook_url = os.getenv("DINGTALK_WEBHOOK")
+    if webhook_url:
+        return webhook_url
+
+    # 其次使用 DING_TOKEN（从 .env 读取）
+    ding_token = os.getenv("DING_TOKEN")
+    if ding_token:
+        return f"https://oapi.dingtalk.com/robot/send?access_token={ding_token}"
+
+    return ""
 
 
 def send_dingtalk_notification(
@@ -80,9 +108,10 @@ def main():
         print("Status must be 'success' or 'failure'")
         sys.exit(1)
 
-    webhook_url = os.getenv("DINGTALK_WEBHOOK")
+    webhook_url = get_webhook_url()
     if not webhook_url:
-        print("Error: DINGTALK_WEBHOOK environment variable not set")
+        print("Error: DINGTALK_WEBHOOK or DING_TOKEN not set")
+        print("Set DINGTALK_WEBHOOK env var or add DING_TOKEN to .env file")
         sys.exit(1)
 
     job_name = os.getenv("JOB_NAME", "UI-Automation-Test")
