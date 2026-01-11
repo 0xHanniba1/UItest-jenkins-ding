@@ -12,17 +12,23 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Setup Environment') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip3 install --upgrade pip
+                    pip3 install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
                 sh '''
+                    . venv/bin/activate
                     export HEADLESS=true
-                    python3 -m pytest tests/ -v --alluredir=reports/allure-results
+                    python -m pytest tests/ -v --alluredir=reports/allure-results
                 '''
             }
         }
@@ -40,7 +46,10 @@ pipeline {
         success {
             script {
                 if (env.DINGTALK_WEBHOOK) {
-                    sh 'python3 utils/dingtalk.py success'
+                    sh '''
+                        . venv/bin/activate
+                        python utils/dingtalk.py success
+                    '''
                 } else {
                     echo 'DINGTALK_WEBHOOK not configured, skipping notification'
                 }
@@ -49,7 +58,10 @@ pipeline {
         failure {
             script {
                 if (env.DINGTALK_WEBHOOK) {
-                    sh 'python3 utils/dingtalk.py failure'
+                    sh '''
+                        . venv/bin/activate
+                        python utils/dingtalk.py failure
+                    '''
                 } else {
                     echo 'DINGTALK_WEBHOOK not configured, skipping notification'
                 }
