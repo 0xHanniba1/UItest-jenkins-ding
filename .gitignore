@@ -1,0 +1,76 @@
+# Python
+
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# 虚拟环境
+
+venv/
+.venv/
+env/
+*.env*
+
+# IDE
+
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 测试/覆盖率
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 日志和临时文件
+
+*.log
+*.tmp
+.cache/
+
+# 环境变量和敏感信息
+
+.env
+.env.local
+*.pem
+*.key
+secrets/
+
+# 系统文件
+
+.DS_Store
+Thumbs.db
+
+# AI 工具
+
+.cursor/
+.aider*
+.claude/
+.codex/
+.continue/
+.codeium/
+.tabnine/
+.sourcegraph/
+.cody/
+CLAUDE.md
+.github/copilot-*
+
+# AI 生成的临时/上下文文件
+
+*_prompt.txt
+*_context.md
+.ai_history/
+
+# 项目特定（按需调整）
+
+output/
+data/
+*.csv
+*.xlsx
