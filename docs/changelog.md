@@ -1,5 +1,14 @@
 # 变更日志
 
+## [0.4.2] - 2026-01-11
+
+### 新增
+- 支持从 .env 文件读取钉钉 Token（本地测试用）
+  - 添加 `python-dotenv` 依赖
+  - `dingtalk.py` 自动加载项目根目录 .env 文件
+  - 支持 `DING_TOKEN`（本地）和 `DINGTALK_WEBHOOK`（Jenkins）两种配置方式
+  - 更新 `.env.example` 示例文件
+
 ## [0.4.1] - 2026-01-11
 
 ### 修复
