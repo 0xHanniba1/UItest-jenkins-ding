@@ -1,5 +1,13 @@
 # 变更日志
 
+## [0.4.1] - 2026-01-11
+
+### 修复
+- 修复 Jenkinsfile pipeline 结构问题
+  - 将 Allure Report 移至 stages 阶段内，解决 node 上下文缺失错误
+  - 钉钉通知改为可选配置，未配置凭据时跳过通知（不再报错）
+  - 修复 `MissingContextVariableException: Required context class hudson.FilePath is missing` 错误
+
 ## [0.4.0] - 2026-01-11
 
 ### 新增
