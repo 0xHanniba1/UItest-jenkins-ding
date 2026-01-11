@@ -28,6 +28,7 @@ env/
 .pytest_cache/
 .coverage
 htmlcov/
+reports/
 
 # 日志和临时文件
 
