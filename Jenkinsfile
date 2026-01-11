@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         HEADLESS = 'true'
-        DINGTALK_WEBHOOK = credentials('dingtalk-webhook')
     }
 
     stages {
@@ -27,19 +26,34 @@ pipeline {
                 '''
             }
         }
+
+        stage('Allure Report') {
+            steps {
+                allure includeProperties: false,
+                       jdk: '',
+                       results: [[path: 'reports/allure-results']]
+            }
+        }
     }
 
     post {
-        always {
-            allure includeProperties: false,
-                   jdk: '',
-                   results: [[path: 'reports/allure-results']]
-        }
         success {
-            sh 'python3 utils/dingtalk.py success'
+            script {
+                if (env.DINGTALK_WEBHOOK) {
+                    sh 'python3 utils/dingtalk.py success'
+                } else {
+                    echo 'DINGTALK_WEBHOOK not configured, skipping notification'
+                }
+            }
         }
         failure {
-            sh 'python3 utils/dingtalk.py failure'
+            script {
+                if (env.DINGTALK_WEBHOOK) {
+                    sh 'python3 utils/dingtalk.py failure'
+                } else {
+                    echo 'DINGTALK_WEBHOOK not configured, skipping notification'
+                }
+            }
         }
         cleanup {
             cleanWs()
